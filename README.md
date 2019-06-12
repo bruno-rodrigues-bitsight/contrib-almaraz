@@ -219,13 +219,13 @@ It is also possible to customize which beans are instantiated without using `Alm
 @Configuration
 public class WebConfig {
 
-    @Order(10)
+	@Order(10)
 	@Bean
-    public RequestContextWebFilter getContextWebFilter() {
+	public RequestContextWebFilter getContextWebFilter() {
 		return new RequestContextWebFilter();
 	}
 
-    @Order(20)
+	@Order(20)
 	@Bean
 	public LoggerWebFilter getLoggerWebFilter() {
 		return new LoggerWebFilter();
