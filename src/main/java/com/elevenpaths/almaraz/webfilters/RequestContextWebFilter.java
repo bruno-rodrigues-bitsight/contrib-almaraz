@@ -40,14 +40,14 @@ import reactor.util.context.Context;
 public class RequestContextWebFilter implements WebFilter {
 
 	/**
+	 * Default correlator header.
+	 */
+	public static final String DEFAULT_CORRELATOR_HEADER = "Unica-Correlator";
+
+	/**
 	 * Default context supplier. It creates a {@link RequestContext} instance.
 	 */
 	private static final Supplier<? extends RequestContext> DEFAULT_CONTEXT_SUPPLIER = () -> new RequestContext();
-
-	/**
-	 * Default correlator header.
-	 */
-	private static final String DEFAULT_CORRELATOR_HEADER = "Unica-Correlator";
 
 	/**
 	 * Context supplier to build a {@link RequestContext} instance. Note that each request processed by the {@link WebFilter}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="static-appender" class="com.elevenpaths.almaraz.utils.LoggingAppender" />
+	<root level="debug">
+		<appender-ref ref="static-appender" />
+	</root>
+</configuration>
