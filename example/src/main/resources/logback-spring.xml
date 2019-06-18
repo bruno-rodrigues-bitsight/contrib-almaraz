@@ -31,6 +31,7 @@
 					</throwableConverter>
 				</stackTrace>
 				<pattern>
+					<omitEmptyFields>true</omitEmptyFields>
 					<pattern>
 						{
 						"svc": "almaraz-example",
