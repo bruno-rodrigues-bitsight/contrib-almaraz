@@ -315,6 +315,10 @@ Almaraz provides a hierarchy of exceptions that implements these errors:
 | UnsupportedMediaTypeException | - | 415 | Unsupported media type. |
 | ServerException | server_error | 500 | Internal error due to unhandled exception or bad integration with external systems. |
 
+## Disclaimer
+
+This library has been developed by Telefónica as a building block of our internal projects. Future versions of this project will be released according to our own needs. Due to our limited resources, we cannot commit ourselves to attend new features, issues, or pull requests that are not aligned to our roadmap.
+
 ## License
 
 Copyright 2019 [Telefónica Investigación y Desarrollo, S.A.U](http://www.tid.es)

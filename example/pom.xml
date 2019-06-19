@@ -8,7 +8,7 @@
 		<version>2.1.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.elevenpaths</groupId>
+	<groupId>com.elevenpaths.almaraz</groupId>
 	<artifactId>almaraz-example</artifactId>
 	<version>0.1.0</version>
 	<name>almaraz-example</name>
@@ -25,7 +25,7 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.elevenpaths</groupId>
+			<groupId>com.elevenpaths.almaraz</groupId>
 			<artifactId>almaraz</artifactId>
 			<version>0.1.0</version>
 		</dependency>
