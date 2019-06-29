@@ -1,7 +1,37 @@
 version: 2.1
-orbs:
-  maven: circleci/maven@0.0.8
+
+executors:
+  java:
+    docker:
+      - image: circleci/openjdk:8-jdk-node
+
+jobs:
+  build:
+    description: |
+      Checkout, build, test, and upload test results
+    executor: java
+    steps:
+      - checkout
+      - run: make import-keys
+      - restore_cache:
+          key: almaraz-{{ checksum "pom.xml" }}
+      - run: make build
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: almaraz-{{ checksum "pom.xml" }}
+      - store_test_results:
+          path: target/surefire-reports
+      - run:
+          name: test coverage
+          command: |
+            curl -s https://codecov.io/bash | bash -s -- \
+                 -t "${CODECOV_TOKEN}" \
+                 -n "${CIRCLE_BUILD_NUM}" \
+                 -F "unittests" \
+                 -Z || echo 'Codecov upload failed'
+
 workflows:
-  maven_test:
+  build:
     jobs:
-      - maven/test
+      - build

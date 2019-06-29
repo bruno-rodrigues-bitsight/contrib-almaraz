@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/Telefonica/almaraz/tree/master.svg?style=svg)](https://circleci.com/gh/Telefonica/almaraz/tree/master)  [![codecov](https://codecov.io/gh/Telefonica/almaraz/branch/master/graph/badge.svg)](https://codecov.io/gh/Telefonica/almaraz/branch/master)
+
 # Almaraz
 
 Almaraz is a set of components to build up a production-ready service with Spring WebFlux.
