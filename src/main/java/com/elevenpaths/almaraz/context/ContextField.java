@@ -14,6 +14,12 @@ package com.elevenpaths.almaraz.context;
 public class ContextField {
 
 	/**
+	 * Private constructor.
+	 */
+	private ContextField() {
+	}
+
+	/**
 	 * Field name for the transaction id.
 	 */
 	public static final String TRANSACTION_ID = "trans";
