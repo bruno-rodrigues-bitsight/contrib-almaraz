@@ -75,4 +75,14 @@ public class ReactiveLoggerTest {
 			.verify();
 	}
 
+	@Test
+	public void log() {
+		Map<String, Boolean> map = new HashMap<>();
+		Mono<Void> result = ReactiveLogger.log(() -> {
+			map.put("logged", true);
+		});
+		result.block();
+		Assert.assertEquals(true, map.get("logged"));
+	}
+
 }

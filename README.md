@@ -103,6 +103,15 @@ Flux.just("test 1", "test 2")
     .subscribe();
 ```
 
+`ReactiveLogger` also provides a helper function `Mono<Void> log(Runnable log)` to start a reactive stream when you need to write a log as a first step. For example, in `onErrorResume` step.
+
+```java
+Mono.just("test")
+    .onErrorResume(MyException.class, e -> {
+        return ReactiveLogger.log(() -> log.error("Error raised", e)))
+            .thenReturn("test failed");
+```
+
 Finally, it is required to configure the logger to generate contextual information in JSON. This is really convenient to process this information with a log aggregator. The following file configures the logback logger to write to console and include the MDC parameters:
 
 ```xml

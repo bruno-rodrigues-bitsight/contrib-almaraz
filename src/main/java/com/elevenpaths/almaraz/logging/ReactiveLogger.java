@@ -11,6 +11,7 @@ import org.slf4j.MDC;
 
 import com.elevenpaths.almaraz.context.RequestContext;
 
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.core.publisher.SignalType;
 import reactor.util.context.Context;
@@ -109,6 +110,24 @@ public class ReactiveLogger {
 		return logOnSignal(
 				signal -> signal.getType() == SignalType.ON_ERROR,
 				signal -> log.accept(signal.getThrowable()));
+	}
+
+	/**
+	 * Helper to log when there is no reactive step yet (e.g. inside an onErrorResume step
+	 * where it is required to log a message but including the log context).
+	 *
+	 * <code>
+	 * .onErrorResume(MyException.class, e -> ReactiveLogger.log(()
+	 *         -> log.error("Error", e)));
+	 * </code>
+	 *
+	 * @param log
+	 * @return Mono empty
+	 */
+	public static Mono<Void> log(Runnable log) {
+		return Mono.empty()
+				.doOnEach(ReactiveLogger.logOnComplete(log))
+				.then();
 	}
 
 }
