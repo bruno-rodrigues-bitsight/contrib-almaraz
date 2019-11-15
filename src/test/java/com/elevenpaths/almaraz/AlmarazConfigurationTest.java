@@ -7,9 +7,11 @@ package com.elevenpaths.almaraz;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 
 import com.elevenpaths.almaraz.resolvers.ValidRequestBodyResolver;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Unit tests for {@link AlmarazConfiguration}.
@@ -28,6 +30,17 @@ public class AlmarazConfigurationTest {
 		Assert.assertNotNull(config.getErrorWebFilter());
 		Assert.assertNotNull(config.getCompleteLocationHeaderWebFilter());
 		Assert.assertNotNull(config.getBasePathWebFilter());
+	}
+
+	@Test
+	public void versionBean() {
+		AlmarazConfiguration config = new AlmarazConfiguration("/api");
+		Assert.assertNull(config.getVersionWebFilter());
+
+		ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
+		BuildProperties buildProperties = Mockito.mock(BuildProperties.class);
+		config = new AlmarazConfiguration("/api", objectMapper, buildProperties);
+		Assert.assertNotNull(config.getVersionWebFilter());
 	}
 
 	@Test

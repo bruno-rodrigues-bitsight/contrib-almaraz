@@ -14,7 +14,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 
 import com.elevenpaths.almaraz.exceptions.NotFoundException;
-import com.elevenpaths.almaraz.webfilters.BasePathWebFilter;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;

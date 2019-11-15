@@ -4,6 +4,7 @@
 
 package com.elevenpaths.almaraz;
 
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -20,6 +21,8 @@ import com.elevenpaths.almaraz.webfilters.CompleteLocationHeaderWebFilter;
 import com.elevenpaths.almaraz.webfilters.ErrorWebFilter;
 import com.elevenpaths.almaraz.webfilters.LoggerWebFilter;
 import com.elevenpaths.almaraz.webfilters.RequestContextWebFilter;
+import com.elevenpaths.almaraz.webfilters.VersionWebFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Default configuration for WebFlux applications that provides some of the Almaraz
@@ -52,6 +55,16 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	private final String basePath;
 
 	/**
+	 * {@link ObjectMapper} to marshal and unmarshal JSON objects with spring customization.
+	 */
+	private final ObjectMapper objectMapper;
+
+	/**
+	 * Information for the application version (used by {@link VersionWebFilter}).
+	 */
+	private final BuildProperties buildProperties;
+
+	/**
 	 * JSON schema validation.
 	 */
 	private final JsonSchemaValidator validator;
@@ -62,7 +75,29 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	 * @param basePath
 	 */
 	public AlmarazConfiguration(String basePath) {
+		this(basePath, null);
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param basePath
+	 * @param objectMapper
+	 */
+	public AlmarazConfiguration(String basePath, ObjectMapper objectMapper) {
+		this(basePath, objectMapper, null);
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param basePath
+	 * @param buildProperties
+	 */
+	public AlmarazConfiguration(String basePath, ObjectMapper objectMapper, BuildProperties buildProperties) {
 		this.basePath = basePath;
+		this.objectMapper = (objectMapper == null) ? new ObjectMapper() : objectMapper;
+		this.buildProperties = buildProperties;
 		validator = new JsonSchemaValidator(new JsonSchemaRepository());
 	}
 
@@ -75,6 +110,22 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	public JsonSchemaValidator getJsonSchemaValidator() {
 		return validator;
 	}
+
+	/**
+	 * Get the {@link RequestContextWebFilter} that generates the reactive context
+	 * and initializes it with the correlator and transactionId.
+	 *
+	 * @return {@link WebFilter} to initialize the reactive context with {@link RequestContext}.
+	 */
+	@Order(5)
+	@Bean
+	public VersionWebFilter getVersionWebFilter() {
+		if (buildProperties == null) {
+			return null;
+		}
+		return new VersionWebFilter(objectMapper, buildProperties);
+	}
+
 
 	/**
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context
@@ -108,7 +159,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	@Order(30)
 	@Bean
 	public ErrorWebFilter getErrorWebFilter() {
-		return new ErrorWebFilter();
+		return new ErrorWebFilter(objectMapper);
 	}
 
 	/**
@@ -142,7 +193,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	public void configureArgumentResolvers(ArgumentResolverConfigurer configurer) {
 		WebFluxConfigurer.super.configureArgumentResolvers(configurer);
 		configurer.addCustomResolver(
-				new ValidRequestBodyResolver(validator));
+				new ValidRequestBodyResolver(validator, objectMapper));
 	}
 
 }

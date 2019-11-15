@@ -205,6 +205,7 @@ Almaraz provides a set of Spring WebFlux [WebFilters](https://docs.spring.io/spr
 
 | Middleware | Order | Description |
 | ---------- | ----- | ----------- |
+| VersionWebFilter | 5 | It listens to a GET request to `/version` path (the path is configurable) to reply a JSON body with the version of the application. The version is passed with a Spring BuildProperties object. This webfilter has the highest order to avoid logging this request, especially if it is used as a keep-alive check. |
 | RequestContextWebFilter | 10 | It initializes the `RequestContext` with the correlator and transactionId. This instance is stored in the reactive context. |
 | LoggerWebFilter | 20 |  It logs the request and response with contextual log information. |
 | ErrorWebFilter | 30 |  It handles any exception to build up an error response. |
@@ -225,6 +226,22 @@ public class WebConfig extends AlmarazConfiguration {
 
 	public WebConfig(@Value("${server.basePath}") String basePath) {
 		super(basePath);
+	}
+
+}
+```
+
+The `AlmarazConfiguration` supports 2 additional arguments in the constructor: `ObjectMapper` to serialize JSON documents with custom settings (e.g. Spring settings), and `BuildProperties` to enable `VersionWebFilter`:
+
+```java
+@Configuration
+public class WebConfig extends AlmarazConfiguration {
+
+	public WebConfig(
+        @Value("${server.basePath}") String basePath,
+        ObjectMapper objectMapper,
+        BuildProperties buildProperties) {
+		super(basePath, objectMapper, buildProperties);
 	}
 
 }

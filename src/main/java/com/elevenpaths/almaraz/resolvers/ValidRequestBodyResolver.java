@@ -66,9 +66,9 @@ import reactor.core.publisher.Mono;
  */
 public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 
-	private static final ObjectMapper MAPPER = new ObjectMapper();
-
 	private final JsonSchemaValidator validator;
+
+	private final ObjectMapper objectMapper;
 
 	/**
 	 * Constructor.
@@ -76,7 +76,18 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 	 * @param validator
 	 */
 	public ValidRequestBodyResolver(JsonSchemaValidator validator) {
+		this(validator, new ObjectMapper());
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param validator
+	 * @param objectMapper
+	 */
+	public ValidRequestBodyResolver(JsonSchemaValidator validator, ObjectMapper objectMapper) {
 		this.validator = validator;
+		this.objectMapper = objectMapper;
 	}
 
 	@Override
@@ -117,7 +128,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		return exchange.getFormData().map(formData -> multi ? formData : toSingleValueMap(formData))
 				.map(formData -> {
 					try {
-						JsonNode node = MAPPER.valueToTree(formData);
+						JsonNode node = objectMapper.valueToTree(formData);
 						return validateAndMarshal(schemaName, node, valueType);
 					} catch (IOException e) {
 						throw new InvalidRequestException("invalid urlencoded body", e);
@@ -136,7 +147,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 	protected Mono<Object> resolveJsonBody(ServerWebExchange exchange, String schemaName, Class<?> valueType) {
 		return getBodyInputStream(exchange).map(is -> {
 			try {
-				JsonNode node = MAPPER.readTree(is);
+				JsonNode node = objectMapper.readTree(is);
 				if (node == null) {
 					throw new InvalidRequestException("expected json body");
 				}
@@ -159,7 +170,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 	protected Mono<Object> resolveQueryParams(ServerWebExchange exchange, String schemaName, Class<?> valueType, boolean multi) {
 		MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
 		try {
-			JsonNode node = MAPPER.valueToTree(multi ? queryParams : toSingleValueMap(queryParams));
+			JsonNode node = objectMapper.valueToTree(multi ? queryParams : toSingleValueMap(queryParams));
 			return Mono.just(validateAndMarshal(schemaName, node, valueType));
 		} catch (IOException e) {
 			throw new InvalidRequestException("invalid query params", e);
@@ -196,7 +207,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		if (valueType == JsonNode.class) {
 			return node;
 		}
-		return MAPPER.treeToValue(node, valueType);
+		return objectMapper.treeToValue(node, valueType);
 	}
 
 	/**

@@ -45,9 +45,25 @@ import reactor.core.publisher.Mono;
 public class ErrorWebFilter implements WebFilter {
 
 	/**
-	 * Jackson {@link ObjectMapper} to generate the JSON of the response body.
+	 * Marshaller of error responses into JSON.
 	 */
-	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+	private final ObjectMapper objectMapper;
+
+	/**
+	 * Constructor.
+	 */
+	public ErrorWebFilter() {
+		this(new ObjectMapper());
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param objectMapper
+	 */
+	public ErrorWebFilter(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	/**
 	 * Web filter implementation to write a log entry when the request is received and
@@ -101,9 +117,9 @@ public class ErrorWebFilter implements WebFilter {
 			node.put("error_description", e.getReason());
 		}
 		if (e.getDetailMap() != null) {
-			node.set("error_details", OBJECT_MAPPER.valueToTree(e.getDetailMap()));
+			node.set("error_details", objectMapper.valueToTree(e.getDetailMap()));
 		}
-		return OBJECT_MAPPER.writer().writeValueAsBytes(node);
+		return objectMapper.writer().writeValueAsBytes(node);
 	}
 
 	/**

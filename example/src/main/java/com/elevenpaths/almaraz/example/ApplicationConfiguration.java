@@ -5,6 +5,7 @@
 package com.elevenpaths.almaraz.example;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Configuration;
 
 import com.elevenpaths.almaraz.AlmarazConfiguration;
@@ -19,8 +20,11 @@ import com.elevenpaths.almaraz.AlmarazConfiguration;
 @Configuration
 public class ApplicationConfiguration extends AlmarazConfiguration {
 
-	public ApplicationConfiguration(@Value("${almaraz-example.base-path}") String basePath) {
-		super(basePath);
+	public ApplicationConfiguration(
+			@Value("${almaraz-example.base-path}") String basePath,
+			ObjectMapper objectMapper,
+			BuildProperties buildProperties) {
+		super(basePath, objectMapper, buildProperties);
 	}
 
 }
