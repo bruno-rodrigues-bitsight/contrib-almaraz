@@ -108,8 +108,9 @@ Flux.just("test 1", "test 2")
 ```java
 Mono.just("test")
     .onErrorResume(MyException.class, e -> {
-        return ReactiveLogger.log(() -> log.error("Error raised", e)))
+        return ReactiveLogger.log(() -> log.error("Error raised", e))
             .thenReturn("test failed");
+    });
 ```
 
 Finally, it is required to configure the logger to generate contextual information in JSON. This is really convenient to process this information with a log aggregator. The following file configures the logback logger to write to console and include the MDC parameters:
