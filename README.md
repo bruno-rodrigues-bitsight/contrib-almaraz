@@ -346,6 +346,21 @@ Almaraz provides a hierarchy of exceptions that implements these errors:
 | UnsupportedMediaTypeException | - | 415 | Unsupported media type. |
 | ServerException | server_error | 500 | Internal error due to unhandled exception or bad integration with external systems. |
 
+## How to publish a new version
+
+This library is published in maven central repository. To publish a new version, it requires to upgrade the version in pom.xml. However, to coordinate the version of the library and the example, the makefile provides the `set-version` target.
+
+Follow these steps to upgrade the version (e.g. to version 0.2.2):
+
+```sh
+export VERSION=0.2.2
+make set-version
+```
+
+Then you need to push the change to master branch via a pull request.
+
+Finally, create a new tag to trigger the publication of the new version in maven central repository. This is automated with circleci.
+
 ## Disclaimer
 
 This library has been developed by Telefónica as a building block of our internal projects. Future versions of this project will be released according to our own needs. Due to our limited resources, we cannot commit ourselves to attend new features, issues, or pull requests that are not aligned to our roadmap.
