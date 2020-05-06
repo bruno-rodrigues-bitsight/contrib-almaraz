@@ -24,7 +24,7 @@ Commands:
   deploy:       Publish the library in the maven central repository
                  Environment variables:
                   - SONATYPE_USER
-				  - SONATYPE_PASSWORD
+                  - SONATYPE_PASSWORD
 endef
 export help
 
