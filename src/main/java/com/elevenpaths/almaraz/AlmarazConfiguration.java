@@ -12,6 +12,7 @@ import org.springframework.web.reactive.result.method.annotation.ArgumentResolve
 import org.springframework.web.server.WebFilter;
 
 import com.elevenpaths.almaraz.context.RequestContext;
+import com.elevenpaths.almaraz.context.aspects.OperationRequestContextAspect;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBody;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBodyResolver;
 import com.elevenpaths.almaraz.validation.JsonSchemaRepository;
@@ -110,6 +111,16 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	public JsonSchemaValidator getJsonSchemaValidator() {
 		return validator;
 	}
+	
+	/**
+	 * Get an instance of OperationRequestContext aspect.
+	 *
+	 * @return OperationRequestContextAspect
+	 */
+	@Bean
+	public OperationRequestContextAspect getOperationRequestContextAspect() {
+		return new OperationRequestContextAspect();
+	}
 
 	/**
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context
@@ -125,7 +136,6 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 		}
 		return new VersionWebFilter(objectMapper, buildProperties);
 	}
-
 
 	/**
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context

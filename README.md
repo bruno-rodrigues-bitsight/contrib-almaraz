@@ -53,6 +53,23 @@ public static Mono<RequestContext> context() {
 
 Note that it is assumed that `RequestContext` is always stored in the Reactor context under the key `RequestContext.class`.
 
+### Operation in the context
+
+It is not possible to identify the operation in a web filter when using a Spring `Controller` because the controller is responsible for the routing of the request to the appropriate method. It would be very repetitive to include the operation in each controller method. Apart from that, updating the context is a bit tricky due to its reactive nature.
+
+Almaraz provides the Java annotation `@OperationRequestContext` to decorate a method and update the `RequestContext` with the operation name. By default, it takes the method name as operation, but it could be customized with a `value` parameter.
+
+It is recommended to annotate the methods of the Spring controller so that the `RequestContext` is enriched with the operation and the log records can identify which operation is being served.
+
+```java
+@OperationRequestContext
+@DeleteMapping(value = "/{userId}")
+public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
+	return usersService.deleteUser(userId)
+			.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+}
+```
+
 ## Logging
 
 Logging is based on the ideas provided by Simon Basle in [Contextual Logging with Reactor Context and MDC](https://simonbasle.github.io/2018/02/contextual-logging-with-reactor-context-and-mdc/). The implementation uses Reactor `doOnEach`:
