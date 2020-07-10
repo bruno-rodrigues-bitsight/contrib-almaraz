@@ -54,10 +54,24 @@ public class MDCServerWebExchange {
 	 */
 	public static String getPath(ServerWebExchange exchange) {
 		try {
-			return exchange.getRequest().getPath().value();
+			return exchange.getRequest().getURI().getPath();
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	/**
+	 * Get the query params of the exchange request.
+	 *
+	 * @param exchange
+	 * @return request query params
+	 */
+	public static String getQueryParams(ServerWebExchange exchange) {
+		try {
+			return exchange.getRequest().getURI().getQuery();
+		} catch (Exception e) {
+			return null;
+		} 
 	}
 
 	/**
