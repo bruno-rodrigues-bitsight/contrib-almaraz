@@ -8,8 +8,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.HttpStatus;
@@ -50,7 +50,7 @@ public class VersionWebFilterTest {
 				MockServerWebExchange.from(MockServerHttpRequest.patch("/version")));
 		for (MockServerWebExchange exchange : exchanges) {
 			filter.filter(exchange, chain).block(Duration.ZERO);
-			Assert.assertTrue(exchange.getResponse().isCommitted());
+			Assertions.assertTrue(exchange.getResponse().isCommitted());
 		}
 	}
 
@@ -67,9 +67,9 @@ public class VersionWebFilterTest {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/version"));
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
-		Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, exchange.getResponse().getHeaders().getContentType());
-		Assert.assertEquals(body, exchange.getResponse().getBodyAsString().block(Duration.ZERO));
+		Assertions.assertEquals(HttpStatus.OK, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(MediaType.APPLICATION_JSON_VALUE, exchange.getResponse().getHeaders().getContentType().toString());
+		Assertions.assertEquals(body, exchange.getResponse().getBodyAsString().block(Duration.ZERO));
 	}
 
 	private static class TestWebFilterChain implements WebFilterChain {

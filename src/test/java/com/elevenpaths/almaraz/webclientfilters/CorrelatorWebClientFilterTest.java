@@ -6,8 +6,8 @@ package com.elevenpaths.almaraz.webclientfilters;
 
 import java.net.URI;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.ClientRequest;
@@ -36,15 +36,15 @@ public class CorrelatorWebClientFilterTest {
 		ClientRequest request = ClientRequest.create(HttpMethod.GET, URI.create("http://localhost:8080")).build();
 		ClientResponse response = Mockito.mock(ClientResponse.class);
 		ExchangeFunction exchange = r -> {
-			Assert.assertEquals("test-corr", r.headers().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
+			Assertions.assertEquals("test-corr", r.headers().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
 			return Mono.just(response);
 		};
 
 		CorrelatorWebClientFilter filter = new CorrelatorWebClientFilter();
 		ClientResponse actualResponse = filter.filter(request, exchange)
-				.subscriberContext(Context.of(RequestContext.class, requestContext))
+				.contextWrite(Context.of(RequestContext.class, requestContext))
 				.block();
-		Assert.assertEquals(response, actualResponse);
+		Assertions.assertEquals(response, actualResponse);
 	}
 
 }

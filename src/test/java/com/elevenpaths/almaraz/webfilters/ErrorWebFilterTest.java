@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,7 +43,7 @@ public class ErrorWebFilterTest {
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
 
-		Assert.assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class ErrorWebFilterTest {
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
 
-		Assert.assertEquals(HttpStatus.BAD_REQUEST, exchange.getResponse().getStatusCode());
-		Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, exchange.getResponse().getHeaders().getContentType());
+		Assertions.assertEquals(HttpStatus.BAD_REQUEST, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(MediaType.APPLICATION_JSON_VALUE, exchange.getResponse().getHeaders().getContentType().toString());
 		validateErrorBody(exchange, "invalid_request", "$.country is invalid");
 	}
 
@@ -67,9 +67,9 @@ public class ErrorWebFilterTest {
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
 
-		Assert.assertEquals(HttpStatus.FORBIDDEN, exchange.getResponse().getStatusCode());
-		Assert.assertEquals(MediaType.APPLICATION_JSON_UTF8, exchange.getResponse().getHeaders().getContentType());
-		Assert.assertEquals(InsufficientScopesException.WWW_AUTHENTICATE_VALUE, exchange.getResponse().getHeaders().getFirst(HttpHeaders.WWW_AUTHENTICATE));
+		Assertions.assertEquals(HttpStatus.FORBIDDEN, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(MediaType.APPLICATION_JSON_VALUE, exchange.getResponse().getHeaders().getContentType().toString());
+		Assertions.assertEquals(InsufficientScopesException.WWW_AUTHENTICATE_VALUE, exchange.getResponse().getHeaders().getFirst(HttpHeaders.WWW_AUTHENTICATE));
 		validateErrorBody(exchange, "unauthorized_client", "invalid token: insufficient scopes");
 	}
 
@@ -81,7 +81,7 @@ public class ErrorWebFilterTest {
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
 
-		Assert.assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(HttpStatus.NOT_FOUND, exchange.getResponse().getStatusCode());
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class ErrorWebFilterTest {
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
 
-		Assert.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exchange.getResponse().getStatusCode());
+		Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, exchange.getResponse().getStatusCode());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,10 +101,10 @@ public class ErrorWebFilterTest {
 			.consumeNextWith(body -> {
 				try {
 					Map<String, String> errorMap = new ObjectMapper().readValue(body, Map.class);
-					Assert.assertEquals(expectedError, errorMap.get("error"));
-					Assert.assertEquals(expectedErrorDescription, errorMap.get("error_description"));
+					Assertions.assertEquals(expectedError, errorMap.get("error"));
+					Assertions.assertEquals(expectedErrorDescription, errorMap.get("error_description"));
 				} catch (IOException e) {
-					Assert.fail();
+					Assertions.fail();
 				}
 			})
 			.verifyComplete();

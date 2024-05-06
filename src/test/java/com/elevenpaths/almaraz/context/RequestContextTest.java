@@ -3,14 +3,14 @@
  */
 package com.elevenpaths.almaraz.context;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import reactor.test.StepVerifier;
 
@@ -52,7 +52,7 @@ public class RequestContextTest {
 		assertNotNull(context);
 
 		assertEquals("custom", requestContext.getString("customStr"));
-		assertEquals(new Long(1L), requestContext.getLong("customLong"));
+		assertEquals(Long.valueOf(1L), requestContext.getLong("customLong"));
 		assertNull(requestContext.getLong("customLong2"));
 		assertEquals(true, requestContext.getBoolean("customBool"));
 		assertFalse(requestContext.getBoolean("customBool2"));

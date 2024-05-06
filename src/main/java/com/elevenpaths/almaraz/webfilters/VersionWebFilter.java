@@ -115,7 +115,7 @@ public class VersionWebFilter implements WebFilter {
 	protected Mono<Void> renderVersionResponse(ServerWebExchange exchange) {
 		ServerHttpResponse response = exchange.getResponse();
 		response.setStatusCode(HttpStatus.OK);
-		response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+		response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		DataBuffer buffer = response.bufferFactory().wrap(buildPropertiesBytes);
 		return response.writeWith(Mono.just(buffer));
 	}

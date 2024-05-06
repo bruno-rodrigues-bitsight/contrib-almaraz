@@ -10,6 +10,7 @@ import java.util.Map;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaException;
 import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion.VersionFlag;
 
 /**
  * Repository of JSON schemas in the directory /schemas of the classpath.
@@ -56,7 +57,7 @@ public class JsonSchemaRepository {
 			if (is == null) {
 				throw new JsonSchemaRepositoryException("Schema not found: " + schemaPath);
 			}
-			return JsonSchemaFactory.getInstance().getSchema(is);
+			return JsonSchemaFactory.getInstance(VersionFlag.V202012).getSchema(is);
 		} catch (JsonSchemaException | IOException e) {
 			throw new JsonSchemaRepositoryException("Invalid schema: " + schemaPath, e);
 		}

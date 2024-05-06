@@ -6,12 +6,12 @@ package com.elevenpaths.almaraz.validation;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.elevenpaths.almaraz.exceptions.InvalidRequestException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JsonSchemaValidatorTest {
 	
 	@Spy
@@ -57,7 +57,7 @@ public class JsonSchemaValidatorTest {
 			jsonSchemaValidator.validate("schema", jsonNode);
 			Mockito.verify(jsonSchemaRepository, Mockito.times(1)).getJsonSchema("schema");
 		} catch (IOException e) {
-			Assert.assertTrue(false);
+			Assertions.assertTrue(false);
 		}
 	}
 	
@@ -72,10 +72,10 @@ public class JsonSchemaValidatorTest {
 			JsonSchemaValidator jsonSchemaValidator = new JsonSchemaValidator(jsonSchemaRepository);
 			jsonSchemaValidator.validate("schema", jsonNode);
 		} catch (IOException e) {
-			Assert.assertTrue(false);
+			Assertions.assertTrue(false);
 		} catch (InvalidRequestException e) {
 			Mockito.verify(jsonSchemaRepository, Mockito.times(1)).getJsonSchema("schema");
-			Assert.assertEquals("$.age: is missing but it is required", e.getMessage());
+			Assertions.assertEquals("$: required property 'age' not found", e.getMessage());
 		}
 	}
 

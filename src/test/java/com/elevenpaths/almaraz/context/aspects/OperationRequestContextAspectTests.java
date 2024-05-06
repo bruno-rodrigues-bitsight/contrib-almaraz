@@ -3,7 +3,7 @@
  */
 package com.elevenpaths.almaraz.context.aspects;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -11,8 +11,8 @@ import java.lang.annotation.Annotation;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,7 +25,7 @@ public class OperationRequestContextAspectTests {
 	private OperationRequestContext operationRequestContext;
 	private OperationRequestContext emptyOperationRequestContext;
 	
-	@Before
+	@BeforeEach
 	public void init() {
 		operationLogAspect = new OperationRequestContextAspect();
 		operationRequestContext = new OperationRequestContext() {

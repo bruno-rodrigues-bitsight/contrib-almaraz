@@ -40,7 +40,7 @@ public class MDCServerWebExchange {
 	 */
 	public static String getMethod(ServerWebExchange exchange) {
 		try {
-			return exchange.getRequest().getMethodValue();
+			return exchange.getRequest().getMethod().toString();
 		} catch (Exception e) {
 			return null;
 		}

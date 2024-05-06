@@ -6,6 +6,7 @@ package com.elevenpaths.almaraz;
 
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
@@ -48,6 +49,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
+@Configuration
 public class AlmarazConfiguration implements WebFluxConfigurer {
 
 	/**

@@ -6,8 +6,8 @@ package com.elevenpaths.almaraz.webfilters;
 
 import java.time.Duration;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
@@ -31,9 +31,9 @@ public class RequestContextWebFilterTest {
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources"));
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertNotNull(chain.requestContext);
-		Assert.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
-		Assert.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
+		Assertions.assertNotNull(chain.requestContext);
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
 	}
 
 	@Test
@@ -42,9 +42,9 @@ public class RequestContextWebFilterTest {
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources"));
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertNotNull(chain.requestContext);
-		Assert.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
-		Assert.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst("My-Correlator"));
+		Assertions.assertNotNull(chain.requestContext);
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst("My-Correlator"));
 	}
 
 	@Test
@@ -53,10 +53,10 @@ public class RequestContextWebFilterTest {
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources").header(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER, "test-corr").build());
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertNotNull(chain.requestContext);
-		Assert.assertNotNull(chain.requestContext.getTransactionId());
-		Assert.assertEquals("test-corr", chain.requestContext.getCorrelator());
-		Assert.assertEquals("test-corr", exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
+		Assertions.assertNotNull(chain.requestContext);
+		Assertions.assertNotNull(chain.requestContext.getTransactionId());
+		Assertions.assertEquals("test-corr", chain.requestContext.getCorrelator());
+		Assertions.assertEquals("test-corr", exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
 	}
 
 	@Test
@@ -65,10 +65,10 @@ public class RequestContextWebFilterTest {
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources").header("My-Correlator", "test-corr").build());
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertNotNull(chain.requestContext);
-		Assert.assertNotNull(chain.requestContext.getTransactionId());
-		Assert.assertEquals("test-corr", chain.requestContext.getCorrelator());
-		Assert.assertEquals("test-corr", exchange.getResponse().getHeaders().getFirst("My-Correlator"));
+		Assertions.assertNotNull(chain.requestContext);
+		Assertions.assertNotNull(chain.requestContext.getTransactionId());
+		Assertions.assertEquals("test-corr", chain.requestContext.getCorrelator());
+		Assertions.assertEquals("test-corr", exchange.getResponse().getHeaders().getFirst("My-Correlator"));
 	}
 
 	@Test
@@ -77,10 +77,10 @@ public class RequestContextWebFilterTest {
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources"));
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertNotNull(chain.requestContext);
-		Assert.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
-		Assert.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
-		Assert.assertEquals("test-value", chain.requestContext.getString("custom"));
+		Assertions.assertNotNull(chain.requestContext);
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), chain.requestContext.getTransactionId());
+		Assertions.assertEquals(chain.requestContext.getCorrelator(), exchange.getResponse().getHeaders().getFirst(RequestContextWebFilter.DEFAULT_CORRELATOR_HEADER));
+		Assertions.assertEquals("test-value", chain.requestContext.getString("custom"));
 	}
 
 	private static class CustomContext extends RequestContext {

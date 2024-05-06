@@ -7,8 +7,8 @@ package com.elevenpaths.almaraz.logging;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.elevenpaths.almaraz.context.RequestContext;
 
@@ -29,12 +29,12 @@ public class ReactiveLoggerTest {
 	public void logOnNext() {
 		String result = Mono.just("test")
 				.doOnEach(ReactiveLogger.logOnNext(value -> {
-					Assert.assertEquals("test", value);
+					Assertions.assertEquals("test", value);
 				}))
-				.subscriberContext(Context.of(RequestContext.class, new RequestContext()))
+				.contextWrite(Context.of(RequestContext.class, new RequestContext()))
 				.block();
 
-		Assert.assertEquals("test", result);
+		Assertions.assertEquals("test", result);
 	}
 
 	@Test
@@ -43,13 +43,13 @@ public class ReactiveLoggerTest {
 		infoMap.put("completed", Boolean.FALSE);
 		Flux.just("test1", "test2")
 				.doOnEach(ReactiveLogger.logOnComplete(() -> {
-					Assert.assertFalse(infoMap.get("completed"));
+					Assertions.assertFalse(infoMap.get("completed"));
 					infoMap.put("completed", Boolean.TRUE);
 				}))
-				.subscriberContext(Context.of(RequestContext.class, new RequestContext()))
+				.contextWrite(Context.of(RequestContext.class, new RequestContext()))
 				.blockLast();
 
-		Assert.assertTrue(infoMap.get("completed"));
+		Assertions.assertTrue(infoMap.get("completed"));
 	}
 
 	@Test
@@ -63,14 +63,14 @@ public class ReactiveLoggerTest {
 					return value;
 				})
 				.doOnEach(ReactiveLogger.logOnError(t -> {
-					Assert.assertEquals(e, t);
+					Assertions.assertEquals(e, t);
 				}))
-				.subscriberContext(Context.of(RequestContext.class, new RequestContext()));
+				.contextWrite(Context.of(RequestContext.class, new RequestContext()));
 
 		StepVerifier.create(result)
 			.expectNextCount(1)
 			.expectErrorSatisfies(error -> {
-				Assert.assertEquals(e, error);
+				Assertions.assertEquals(e, error);
 			})
 			.verify();
 	}
@@ -82,7 +82,7 @@ public class ReactiveLoggerTest {
 			map.put("logged", true);
 		});
 		result.block();
-		Assert.assertEquals(true, map.get("logged"));
+		Assertions.assertEquals(true, map.get("logged"));
 	}
 
 }

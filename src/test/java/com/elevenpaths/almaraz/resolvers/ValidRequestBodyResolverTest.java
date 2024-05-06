@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
@@ -38,7 +38,7 @@ import lombok.Data;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ValidRequestBodyResolverTest {
 
 	@Mock
@@ -53,7 +53,7 @@ public class ValidRequestBodyResolverTest {
 	@Mock
 	BindingContext bindingContext;
 
-	@After
+	@AfterEach
 	public void reset_mocks() {
 		Mockito.reset(validator);
 		Mockito.reset(methodParameter);
@@ -63,14 +63,14 @@ public class ValidRequestBodyResolverTest {
 	public void supportsParameterWithValidRequestBody() {
 		Mockito.when(methodParameter.getParameterAnnotation(ValidRequestBody.class)).thenReturn(validRequestBody);
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
-		Assert.assertTrue(resolver.supportsParameter(methodParameter));
+		Assertions.assertTrue(resolver.supportsParameter(methodParameter));
 	}
 
 	@Test
 	public void supportsParameterWithoutValidRequestBody() {
 		Mockito.when(methodParameter.getParameterAnnotation(ValidRequestBody.class)).thenReturn(null);
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
-		Assert.assertFalse(resolver.supportsParameter(methodParameter));
+		Assertions.assertFalse(resolver.supportsParameter(methodParameter));
 	}
 
 	@Test
@@ -90,9 +90,9 @@ public class ValidRequestBodyResolverTest {
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		try {
 			resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-			Assert.fail();
+			Assertions.fail();
 		} catch (UnsupportedMediaTypeException e) {
-			Assert.assertNotNull(e);
+			Assertions.assertNotNull(e);
 		}
 	}
 
@@ -112,8 +112,8 @@ public class ValidRequestBodyResolverTest {
 
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-		Assert.assertEquals("value", value.str);
-		Assert.assertTrue(value.bool);
+		Assertions.assertEquals("value", value.str);
+		Assertions.assertTrue(value.bool);
 	}
 
 	@Test
@@ -133,9 +133,9 @@ public class ValidRequestBodyResolverTest {
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		try {
 			resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-			Assert.fail();
+			Assertions.fail();
 		} catch (InvalidRequestException e) {
-			Assert.assertEquals("invalid json body", e.getMessage());
+			Assertions.assertEquals("invalid json body", e.getMessage());
 		}
 	}
 
@@ -156,9 +156,9 @@ public class ValidRequestBodyResolverTest {
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		try {
 			resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-			Assert.fail();
+			Assertions.fail();
 		} catch (InvalidRequestException e) {
-			Assert.assertEquals("expected json body", e.getMessage());
+			Assertions.assertEquals("expected json body", e.getMessage());
 		}
 	}
 
@@ -178,8 +178,8 @@ public class ValidRequestBodyResolverTest {
 
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-		Assert.assertEquals("value", value.str);
-		Assert.assertTrue(value.bool);
+		Assertions.assertEquals("value", value.str);
+		Assertions.assertTrue(value.bool);
 	}
 
 	@Test
@@ -199,9 +199,9 @@ public class ValidRequestBodyResolverTest {
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		try {
 			resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-			Assert.fail();
+			Assertions.fail();
 		} catch (InvalidRequestException e) {
-			Assert.assertEquals("invalid urlencoded body", e.getMessage());
+			Assertions.assertEquals("invalid urlencoded body", e.getMessage());
 		}
 	}
 
@@ -221,8 +221,8 @@ public class ValidRequestBodyResolverTest {
 
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-		Assert.assertNull(value.str);
-		Assert.assertFalse(value.bool);
+		Assertions.assertNull(value.str);
+		Assertions.assertFalse(value.bool);
 	}
 
 	@Test
@@ -240,8 +240,8 @@ public class ValidRequestBodyResolverTest {
 
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-		Assert.assertEquals("value", value.str);
-		Assert.assertTrue(value.bool);
+		Assertions.assertEquals("value", value.str);
+		Assertions.assertTrue(value.bool);
 	}
 
 	@Test
@@ -259,8 +259,8 @@ public class ValidRequestBodyResolverTest {
 
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.resolveArgument(methodParameter, bindingContext, exchange).block();
-		Assert.assertNull(value.str);
-		Assert.assertFalse(value.bool);
+		Assertions.assertNull(value.str);
+		Assertions.assertFalse(value.bool);
 	}
 
 	@Test
@@ -272,7 +272,7 @@ public class ValidRequestBodyResolverTest {
 		try {
 			resolver.toSingleValueMap(multivalue);
 		} catch (InvalidRequestException e) {
-			Assert.assertEquals("$.repeated: only one value is permitted", e.getMessage());
+			Assertions.assertEquals("$.repeated: only one value is permitted", e.getMessage());
 		}
 	}
 
@@ -287,7 +287,7 @@ public class ValidRequestBodyResolverTest {
 		Map<String, String> expected = new HashMap<>();
 		expected.put("first", "one");
 		expected.put("second", "two");
-		Assert.assertEquals(expected, actual);
+		Assertions.assertEquals(expected, actual);
 	}
 
 	@Test
@@ -298,9 +298,9 @@ public class ValidRequestBodyResolverTest {
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		try {
 			resolver.validateAndMarshal("schema", node, Map.class);
-			Assert.fail();
+			Assertions.fail();
 		} catch (InvalidRequestException e) {
-			Assert.assertEquals("invalid", e.getMessage());
+			Assertions.assertEquals("invalid", e.getMessage());
 		}
 	}
 
@@ -308,7 +308,7 @@ public class ValidRequestBodyResolverTest {
 	public void validateAndMarshalWithJsonNodeType() throws IOException {
 		JsonNode node = getReferenceJsonNode();
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
-		Assert.assertEquals(node, resolver.validateAndMarshal("schema", node, JsonNode.class));
+		Assertions.assertEquals(node, resolver.validateAndMarshal("schema", node, JsonNode.class));
 	}
 
 	@Test
@@ -316,8 +316,8 @@ public class ValidRequestBodyResolverTest {
 		JsonNode node = getReferenceJsonNode();
 		ValidRequestBodyResolver resolver = new ValidRequestBodyResolver(validator);
 		ReferenceType value = (ReferenceType) resolver.validateAndMarshal("schema", node, ReferenceType.class);
-		Assert.assertEquals("value", value.str);
-		Assert.assertTrue(value.bool);
+		Assertions.assertEquals("value", value.str);
+		Assertions.assertTrue(value.bool);
 	}
 
 	protected JsonNode getReferenceJsonNode() throws IOException {

@@ -9,8 +9,8 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
@@ -42,7 +42,7 @@ public class CompleteLocationHeaderWebFilterTest {
 		for (TestCase tc : tcs) {
 			MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources"));
 			filter.filter(exchange, new TestWebFilterChain(tc.location)).block(Duration.ZERO);
-			Assert.assertEquals(tc.expectedLocation, exchange.getResponse().getHeaders().getLocation().toASCIIString());
+			Assertions.assertEquals(tc.expectedLocation, exchange.getResponse().getHeaders().getLocation().toASCIIString());
 		}
 	}
 
@@ -51,7 +51,7 @@ public class CompleteLocationHeaderWebFilterTest {
 		CompleteLocationHeaderWebFilter filter = new CompleteLocationHeaderWebFilter();
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/resources"));
 		filter.filter(exchange, new TestWebFilterChain(null)).block(Duration.ZERO);
-		Assert.assertNull(exchange.getResponse().getHeaders().getLocation());
+		Assertions.assertNull(exchange.getResponse().getHeaders().getLocation());
 	}
 
 	private static class TestCase {

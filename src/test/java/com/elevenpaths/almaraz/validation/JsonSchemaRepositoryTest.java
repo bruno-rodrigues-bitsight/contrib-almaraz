@@ -4,9 +4,9 @@
 package com.elevenpaths.almaraz.validation;
 
 
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import com.elevenpaths.almaraz.validation.JsonSchemaRepository.JsonSchemaRepositoryException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -23,7 +23,7 @@ public class JsonSchemaRepositoryTest {
 
 	private static JsonSchemaRepository jsonSchemaRepository;
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		jsonSchemaRepository = new JsonSchemaRepository();
 	}
@@ -31,43 +31,43 @@ public class JsonSchemaRepositoryTest {
 	@Test
 	public void getJsonSchemaWithRightFile() {
 		JsonSchema result = jsonSchemaRepository.getJsonSchema("schema");
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		JsonNode schemaNode = result.getSchemaNode();
-		Assert.assertNotNull(schemaNode);
+		Assertions.assertNotNull(schemaNode);
 		JsonNode firstNameNode = schemaNode.get("properties").get("firstName");
 		JsonNode lastNameNode = schemaNode.get("properties").get("lastName");
 		JsonNode ageNode = schemaNode.get("properties").get("age");
-		Assert.assertNotNull(firstNameNode);
-		Assert.assertEquals("string", firstNameNode.get("type").asText());
-		Assert.assertNotNull(lastNameNode);
-		Assert.assertEquals("string", lastNameNode.get("type").asText());
-		Assert.assertNotNull(ageNode);
-		Assert.assertEquals("integer", ageNode.get("type").asText());
-		Assert.assertEquals(0, ageNode.get("minimum").asInt());
+		Assertions.assertNotNull(firstNameNode);
+		Assertions.assertEquals("string", firstNameNode.get("type").asText());
+		Assertions.assertNotNull(lastNameNode);
+		Assertions.assertEquals("string", lastNameNode.get("type").asText());
+		Assertions.assertNotNull(ageNode);
+		Assertions.assertEquals("integer", ageNode.get("type").asText());
+		Assertions.assertEquals(0, ageNode.get("minimum").asInt());
 	}
 
 	@Test
 	public void getJsonSchemaUseInternalHashMap() {
 		JsonSchema result = jsonSchemaRepository.getJsonSchema("schema");
-		Assert.assertNotNull(result);
+		Assertions.assertNotNull(result);
 		JsonNode schemaNode = result.getSchemaNode();
-		Assert.assertNotNull(schemaNode);
+		Assertions.assertNotNull(schemaNode);
 		JsonNode firstNameNode = schemaNode.get("properties").get("firstName");
 		JsonNode lastNameNode = schemaNode.get("properties").get("lastName");
 		JsonNode ageNode = schemaNode.get("properties").get("age");
-		Assert.assertNotNull(firstNameNode);
-		Assert.assertEquals("string", firstNameNode.get("type").asText());
-		Assert.assertNotNull(lastNameNode);
-		Assert.assertEquals("string", lastNameNode.get("type").asText());
-		Assert.assertNotNull(ageNode);
-		Assert.assertEquals("integer", ageNode.get("type").asText());
-		Assert.assertEquals(0, ageNode.get("minimum").asInt());
+		Assertions.assertNotNull(firstNameNode);
+		Assertions.assertEquals("string", firstNameNode.get("type").asText());
+		Assertions.assertNotNull(lastNameNode);
+		Assertions.assertEquals("string", lastNameNode.get("type").asText());
+		Assertions.assertNotNull(ageNode);
+		Assertions.assertEquals("integer", ageNode.get("type").asText());
+		Assertions.assertEquals(0, ageNode.get("minimum").asInt());
 	}
 
-	@Test(expected = JsonSchemaRepositoryException.class)
+	@Test()
 	public void getJsonSchemaServerExceptionUnknownSchema() {
-		jsonSchemaRepository.getJsonSchema(null);
-		Assert.assertTrue(false);
+		Assertions.assertThrows(JsonSchemaRepositoryException.class, () -> 
+			jsonSchemaRepository.getJsonSchema(null));
 	}
 
 }

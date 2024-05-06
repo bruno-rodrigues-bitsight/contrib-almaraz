@@ -10,8 +10,8 @@ import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
@@ -49,13 +49,13 @@ public class LoggerWebFilterTest {
 		LoggingAppender.clearEvents();
 
 		filter.filter(exchange, chain)
-			.subscriberContext(Context.of(RequestContext.class, requestContext))
+			.contextWrite(Context.of(RequestContext.class, requestContext))
 			.block(Duration.ZERO);
 
 		List<ILoggingEvent> events = LoggingAppender.getEvents();
-		Assert.assertEquals(2, events.size());
-		Assert.assertEquals("Request", events.get(0).getMessage());
-		Assert.assertEquals("Response", events.get(1).getMessage());
+		Assertions.assertEquals(2, events.size());
+		Assertions.assertEquals("Request", events.get(0).getMessage());
+		Assertions.assertEquals("Response", events.get(1).getMessage());
 	}
 
 	private static class TestWebFilterChain implements WebFilterChain {

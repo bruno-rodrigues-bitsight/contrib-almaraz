@@ -3,23 +3,24 @@
  */
 package com.elevenpaths.almaraz.logging;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 
 /**
@@ -28,20 +29,23 @@ import org.springframework.web.server.ServerWebExchange;
  * @author Juan Hernando <juanantonio.hernandolabajo@telefonica.com>
  *
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class MDCServerWebExchangeTest {
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private ServerWebExchange exchange;
 
-	@After
+	@Mock
+	private ServerHttpResponse responseMock;
+
+	@AfterEach
 	public void reset_mocks() {
-		Mockito.reset(exchange);
+		Mockito.reset(exchange, responseMock);
 	}
 
 	@Test
 	public void getMethodTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
+		Mockito.when(exchange.getRequest().getMethod().toString()).then(answer-> {
 			return "test";
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
@@ -51,7 +55,7 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getMethodExceptionTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
+		Mockito.when(exchange.getRequest().getMethod().toString()).then(answer-> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
@@ -135,7 +139,8 @@ public class MDCServerWebExchangeTest {
 	@Test
 	public void getStatusCodeTest() {
 		HttpStatus httpStatus = HttpStatus.CREATED;
-		Mockito.when(exchange.getResponse().getStatusCode()).then(answer-> {
+    	Mockito.when(exchange.getResponse()).thenReturn(responseMock);
+		Mockito.when(responseMock.getStatusCode()).then(answer-> {
 			return httpStatus;
 		});
 		String result = MDCServerWebExchange.getStatusCode(exchange);
@@ -145,7 +150,8 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getStatusCodeExceptionTest() {
-		Mockito.when(exchange.getResponse().getStatusCode()).then(answer-> {
+		Mockito.when(exchange.getResponse()).thenReturn(responseMock);
+		Mockito.when(responseMock.getStatusCode()).then(answer-> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getStatusCode(exchange);

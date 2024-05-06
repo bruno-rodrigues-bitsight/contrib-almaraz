@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elevenpaths.almaraz</groupId>
 	<artifactId>almaraz</artifactId>
-	<version>0.3.2</version>
+	<version>0.4.0</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -33,6 +33,12 @@
 			<organization>Telefónica</organization>
 			<organizationUrl>https://www.telefonica.com</organizationUrl>
 		</developer>
+		<developer>
+			<name>Victor Rojo Alvarez</name>
+			<email>victor.rojoalvarez@telefonica.com</email>
+			<organization>Telefónica</organization>
+			<organizationUrl>https://www.telefonica.com</organizationUrl>
+		</developer>
 	</developers>
 
 	<scm>
@@ -42,17 +48,17 @@
 	</scm>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>21</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<spring.version>5.3.18</spring.version>
-		<spring-boot.version>2.6.6</spring-boot.version>
-		<reactor.version>3.2.15.RELEASE</reactor.version>
-		<json.schema.version>1.0.19</json.schema.version>
-		<logback.version>1.2.10</logback.version>
-		<junit.version>4.12</junit.version>
-		<mockito.version>2.23.4</mockito.version>
-		<lombok.version>1.18.22</lombok.version>
+		<spring.version>6.1.6</spring.version>
+		<spring-boot.version>3.2.5</spring-boot.version>
+		<reactor.version>3.6.5</reactor.version>
+		<json.schema.version>1.4.0</json.schema.version>
+		<logback.version>1.5.6</logback.version>
+		<junit.version>5.10.2</junit.version>
+		<mockito.version>5.11.0</mockito.version>
+		<lombok.version>1.18.32</lombok.version>
 	</properties>
 
 	<dependencies>
@@ -106,14 +112,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
+			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -125,16 +131,16 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.13.0</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>21</source>
+					<target>21</target>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.3.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -147,7 +153,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.1.0</version>
+				<version>3.6.3</version>
 				<configuration>
 					<doclint>none</doclint>
 				</configuration>
@@ -163,7 +169,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
+				<version>3.2.5</version>
 				<configuration>
 					<argLine>${surefireArgLine}</argLine>
 					<useSystemClassLoader>false</useSystemClassLoader>
@@ -172,7 +178,7 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.4</version>
+				<version>0.8.12</version>
 				<executions>
 					<execution>
 						<goals>
@@ -194,7 +200,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
+				<version>3.2.4</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -214,7 +220,7 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
+				<version>1.6.13</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>ossrh</serverId>

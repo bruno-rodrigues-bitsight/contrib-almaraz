@@ -6,8 +6,8 @@ package com.elevenpaths.almaraz.webfilters;
 
 import java.time.Duration;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
 import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
@@ -33,7 +33,7 @@ public class BasePathWebFilterTest {
 		MockServerWebExchange exchange = MockServerWebExchange.from(MockServerHttpRequest.get("/api/test"));
 
 		filter.filter(exchange, chain).block(Duration.ZERO);
-		Assert.assertEquals("/test", chain.path);
+		Assertions.assertEquals("/test", chain.path);
 	}
 
 	@Test
@@ -44,7 +44,7 @@ public class BasePathWebFilterTest {
 
 		StepVerifier.create(filter.filter(exchange, filterChain))
 			.consumeErrorWith(error -> {
-				Assert.assertEquals(NotFoundException.class, error.getClass());
+				Assertions.assertEquals(NotFoundException.class, error.getClass());
 			})
 			.verify();
 	}

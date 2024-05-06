@@ -4,8 +4,8 @@
 
 package com.elevenpaths.almaraz;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
@@ -24,23 +24,23 @@ public class AlmarazConfigurationTest {
 	@Test
 	public void beans() {
 		AlmarazConfiguration config = new AlmarazConfiguration("/api");
-		Assert.assertNotNull(config.getJsonSchemaValidator());
-		Assert.assertNotNull(config.getContextWebFilter());
-		Assert.assertNotNull(config.getLoggerWebFilter());
-		Assert.assertNotNull(config.getErrorWebFilter());
-		Assert.assertNotNull(config.getCompleteLocationHeaderWebFilter());
-		Assert.assertNotNull(config.getBasePathWebFilter());
+		Assertions.assertNotNull(config.getJsonSchemaValidator());
+		Assertions.assertNotNull(config.getContextWebFilter());
+		Assertions.assertNotNull(config.getLoggerWebFilter());
+		Assertions.assertNotNull(config.getErrorWebFilter());
+		Assertions.assertNotNull(config.getCompleteLocationHeaderWebFilter());
+		Assertions.assertNotNull(config.getBasePathWebFilter());
 	}
 
 	@Test
 	public void versionBean() {
 		AlmarazConfiguration config = new AlmarazConfiguration("/api");
-		Assert.assertNull(config.getVersionWebFilter());
+		Assertions.assertNull(config.getVersionWebFilter());
 
 		ObjectMapper objectMapper = Mockito.mock(ObjectMapper.class);
 		BuildProperties buildProperties = Mockito.mock(BuildProperties.class);
 		config = new AlmarazConfiguration("/api", objectMapper, buildProperties);
-		Assert.assertNotNull(config.getVersionWebFilter());
+		Assertions.assertNotNull(config.getVersionWebFilter());
 	}
 
 	@Test

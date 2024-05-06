@@ -8,6 +8,7 @@ import org.slf4j.MDC;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.MultiValueMap;
@@ -85,7 +86,7 @@ public class ErrorWebFilter implements WebFilter {
 	 */
 	protected Mono<Void> buildErrorResponse(ServerWebExchange exchange, Throwable t) {
 		ResponseException e = getResponseException(t);
-		HttpStatus status = e.getStatus();
+		HttpStatusCode status = e.getStatus();
 		MultiValueMap<String, String> headers = null;
 		byte[] bodyBytes = null;
 		try {
@@ -132,7 +133,7 @@ public class ErrorWebFilter implements WebFilter {
 	 * @return a completed {@link Mono}
 	 */
 	protected Mono<Void> renderErrorResponse(
-			ServerWebExchange exchange, HttpStatus status, byte[] bodyBytes, MultiValueMap<String, String> headers) {
+			ServerWebExchange exchange, HttpStatusCode status, byte[] bodyBytes, MultiValueMap<String, String> headers) {
 		ServerHttpResponse response = exchange.getResponse();
 		response.setStatusCode(status);
 		if (headers != null) {
@@ -141,7 +142,7 @@ public class ErrorWebFilter implements WebFilter {
 		if (bodyBytes == null) {
 			return Mono.empty();
 		}
-		response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE);
+		response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		DataBuffer buffer = response.bufferFactory().wrap(bodyBytes);
 		return response.writeWith(Mono.just(buffer));
 	}
@@ -161,7 +162,7 @@ public class ErrorWebFilter implements WebFilter {
 		}
 		if (t instanceof ResponseStatusException) {
 			ResponseStatusException responseStatusException = (ResponseStatusException)t;
-			return new ResponseException(responseStatusException.getStatus());
+			return new ResponseException(responseStatusException.getStatusCode());
 		}
 		return new ServerException(t);
 	}

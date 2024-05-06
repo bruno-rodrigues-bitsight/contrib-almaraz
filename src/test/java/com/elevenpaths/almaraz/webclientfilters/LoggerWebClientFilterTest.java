@@ -7,8 +7,8 @@ package com.elevenpaths.almaraz.webclientfilters;
 import java.net.URI;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.reactive.function.client.ClientRequest;
@@ -45,14 +45,14 @@ public class LoggerWebClientFilterTest {
 
 		LoggerWebClientFilter filter = new LoggerWebClientFilter();
 		ClientResponse actualResponse = filter.filter(request, exchange)
-				.subscriberContext(Context.of(RequestContext.class, requestContext))
+				.contextWrite(Context.of(RequestContext.class, requestContext))
 				.block();
-		Assert.assertEquals(response, actualResponse);
+		Assertions.assertEquals(response, actualResponse);
 
 		List<ILoggingEvent> events = LoggingAppender.getEvents();
-		Assert.assertEquals(2, events.size());
-		Assert.assertEquals("Client request", events.get(0).getMessage());
-		Assert.assertEquals("Client response", events.get(1).getMessage());
+		Assertions.assertEquals(2, events.size());
+		Assertions.assertEquals("Client request", events.get(0).getMessage());
+		Assertions.assertEquals("Client response", events.get(1).getMessage());
 	}
 
 }

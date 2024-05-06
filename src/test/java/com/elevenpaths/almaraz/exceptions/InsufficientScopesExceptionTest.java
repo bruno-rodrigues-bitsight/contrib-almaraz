@@ -4,8 +4,8 @@
 
 package com.elevenpaths.almaraz.exceptions;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 
@@ -20,13 +20,13 @@ public class InsufficientScopesExceptionTest {
 	@Test
 	public void newInsufficientScopesException() {
 		InsufficientScopesException e = new InsufficientScopesException();
-		Assert.assertEquals(HttpStatus.FORBIDDEN, e.getStatus());
-		Assert.assertEquals(ErrorCodes.UNAUTHORIZED_CLIENT, e.getError());
-		Assert.assertEquals("invalid token: insufficient scopes", e.getReason());
-		Assert.assertNull(e.getCause());
-		Assert.assertEquals(InsufficientScopesException.WWW_AUTHENTICATE_VALUE,
+		Assertions.assertEquals(HttpStatus.FORBIDDEN, e.getStatus());
+		Assertions.assertEquals(ErrorCodes.UNAUTHORIZED_CLIENT, e.getError());
+		Assertions.assertEquals("invalid token: insufficient scopes", e.getReason());
+		Assertions.assertNull(e.getCause());
+		Assertions.assertEquals(InsufficientScopesException.WWW_AUTHENTICATE_VALUE,
 				e.getHeaders().getFirst(HttpHeaders.WWW_AUTHENTICATE));
-		Assert.assertNull(e.getDetailMap());
+		Assertions.assertNull(e.getDetailMap());
 	}
 
 }

@@ -56,7 +56,10 @@ public class LoggerWebClientFilter implements ExchangeFilterFunction {
 	 * @param transactionId
 	 */
 	protected void logResponse(ClientResponse response, long start, String transactionId) {
-		MDC.put(ContextField.STATUS, Integer.toString(response.rawStatusCode()));
+		String statusCode = response.statusCode() != null 
+			? statusCode = Integer.toString(response.statusCode().value()) 
+			: "";
+		MDC.put(ContextField.STATUS, statusCode);
 		MDC.put(ContextField.LATENCY, Long.toString(System.currentTimeMillis() - start));
 		MDC.put(ContextField.TRANSACTION_ID, transactionId);
 		log.info("Client response");

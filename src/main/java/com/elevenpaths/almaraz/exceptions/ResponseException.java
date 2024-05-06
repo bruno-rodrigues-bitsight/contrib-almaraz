@@ -7,7 +7,7 @@ package com.elevenpaths.almaraz.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -31,7 +31,7 @@ public class ResponseException extends RuntimeException {
 	/**
 	 * HTTP status to generate the error response.
 	 */
-	private final HttpStatus status;
+	private final HttpStatusCode status;
 
 	/**
 	 * Error identifier.
@@ -58,7 +58,7 @@ public class ResponseException extends RuntimeException {
 	 *
 	 * @param status
 	 */
-	public ResponseException(HttpStatus status) {
+	public ResponseException(HttpStatusCode status) {
 		this(status, null, null);
 	}
 
@@ -69,7 +69,7 @@ public class ResponseException extends RuntimeException {
 	 * @param error
 	 * @param reason
 	 */
-	public ResponseException(HttpStatus status, String error, String reason) {
+	public ResponseException(HttpStatusCode status, String error, String reason) {
 		this(status, error, reason, null);
 	}
 
@@ -81,7 +81,7 @@ public class ResponseException extends RuntimeException {
 	 * @param reason
 	 * @param t
 	 */
-	public ResponseException(HttpStatus status, String error, String reason, Throwable t) {
+	public ResponseException(HttpStatusCode status, String error, String reason, Throwable t) {
 		super(reason, t);
 		this.status = status;
 		this.error = error;
